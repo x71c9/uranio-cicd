@@ -33,8 +33,7 @@ jobs:
       - name: Reset and pull
         run: |
           ssh ec2-user@${{ secrets.AWS_HOST }} \
-          'bash -s < ls ~/repos/uranio-cicd/ \
-          && git -C ~/repos/uranio-cicd/ reset --hard \
+          'git -C ~/repos/uranio-cicd/ reset --hard \
           && git -C ~/repos/uranio-cicd/ pull origin'
 
       # - name: Run update_container.sh
