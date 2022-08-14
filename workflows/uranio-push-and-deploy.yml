@@ -66,15 +66,28 @@ jobs:
         run: |
           mkdir -p ~/.ssh/ && ssh-keyscan -t rsa ${{ secrets.AWS_HOST }} >> ~/.ssh/known_hosts
 
+      - name: Configure SSH agent
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.AWS_PRIVATE_KEY }}
+
+      # - name: Run update_container.sh
+      #   run: |
+      #     echo "${{ secrets.AWS_PRIVATE_KEY }}" > key.pem \
+      #     && chmod 400 key.pem \
+      #     && ssh -i key.pem ec2-user@${{ secrets.AWS_HOST }} \
+      #     'bash -s < ~/repos/uranio-cicd/gitlab/update_container.sh \
+      #     ${{ env.GITLAB_PROJECT_ID }} \
+      #     ${{ secrets.GITLAB_PERSONAL_ACCESS_TOKEN }} \
+      #     ${{ github.event.repository.name }} \
+      #     ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}'
+
       - name: Run update_container.sh
         run: |
-          echo "${{ secrets.AWS_PRIVATE_KEY }}" > key.pem \
-          && chmod 400 key.pem \
-          && ssh -i key.pem ec2-user@${{ secrets.AWS_HOST }} \
+          ssh ec2-user@${{ secrets.AWS_HOST }} \
           'bash -s < ~/repos/uranio-cicd/gitlab/update_container.sh \
           ${{ env.GITLAB_PROJECT_ID }} \
           ${{ secrets.GITLAB_PERSONAL_ACCESS_TOKEN }} \
           ${{ github.event.repository.name }} \
           ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}'
-
 
