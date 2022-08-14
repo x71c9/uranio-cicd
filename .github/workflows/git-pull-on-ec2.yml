@@ -1,0 +1,51 @@
+# Github action for auto-updating this repo on AWS EC2 Instance
+
+name: Update repo on AWS EC2 Instance
+
+on:
+  push:
+    branches:
+      - master
+
+# env:
+#   REGISTRY: registry.gitlab.com
+#   REGISTRY_USERNAME: x71c9
+#   IMAGE_NAME: uranio/${{ github.event.repository.name }}
+#   GITLAB_PROJECT_ID: <project_id> # 38562332
+
+jobs:
+  autoupdate:
+    name: Autoupdate
+    runs-on: ubuntu-latest
+    steps:
+      # - name: Check out the repo
+      #   uses: actions/checkout@v3
+
+      - name: Configure SSH agent
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.AWS_PRIVATE_KEY }}
+
+      - name: Add known host
+        run: |
+          mkdir ~/.ssh/ && ssh-keyscan -t rsa ${{ secrets.AWS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Reset and pull
+        run: |
+          ssh ec2-user@${{ secrets.AWS_HOST }} \
+          'bash -s < cd ~/repos/uranio-cicd/ \
+          && git reset --hard \
+          && git pull origin'
+
+      # - name: Run update_container.sh
+      #   run: |
+      #     echo "${{ secrets.AWS_PRIVATE_KEY }}" > key.pem \
+      #     && chmod 400 key.pem \
+      #     && ssh -i key.pem ec2-user@${{ secrets.AWS_HOST }} \
+      #     'bash -s < ~/repos/uranio-cicd/gitlab/update_container.sh \
+      #     ${{ env.GITLAB_PROJECT_ID }} \
+      #     ${{ secrets.GITLAB_PERSONAL_ACCESS_TOKEN }} \
+      #     ${{ github.event.repository.name }} \
+      #     ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}'
+
+
