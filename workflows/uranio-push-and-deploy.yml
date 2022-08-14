@@ -56,7 +56,7 @@ jobs:
           uranio docker push \
           --docker_tag="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.sha_short }}"
 
-  #" Comment needed for syntax highlighting bug 
+  #" Comment needed for syntax highlighting bug
   run_ssh_update_script:
     name: Run script on AWS that update container
     needs: "push_to_registry"
@@ -71,7 +71,7 @@ jobs:
           echo "${{ secrets.AWS_PRIVATE_KEY }}" > key.pem \
           && chmod 400 key.pem \
           && ssh -i key.pem ec2-user@${{ secrets.AWS_HOST }} \
-          'bash -s < ~/scripts/gitlab/update_container.sh \
+          'bash -s < ~/repos/uranio-cicd/gitlab/update_container.sh \
           ${{ env.GITLAB_PROJECT_ID }} \
           ${{ secrets.GITLAB_PERSONAL_ACCESS_TOKEN }} \
           ${{ github.event.repository.name }} \
