@@ -49,7 +49,7 @@ jobs:
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
       - name: Init Uranio
-        run: uranio init -uf --prod --docker --repo=adm
+        run: uranio init -uf --prod --docker --repo=adm --docker_load
 
       - name: Uranio Push to Docker Registry
         run: |
