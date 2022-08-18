@@ -36,6 +36,7 @@ fi
 
 echo "Running ${CONTAINER_NAME} ${IMAGE_NAME}:${SHA}..."
 docker run -t -d -p 80:80 -p 443:443 -p 7799:7799\
-        --env-file ~/.envs/$CONTAINER_NAME.env \
-        --name $CONTAINER_NAME \
-        $IMAGE_NAME:$SHA
+	--env-file ~/.envs/$CONTAINER_NAME.env \
+	-v $(pwd)/cert/:~/repos/uranio-bld/cert/ \
+	--name $CONTAINER_NAME \
+	$IMAGE_NAME:$SHA
