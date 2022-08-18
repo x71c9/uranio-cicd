@@ -35,8 +35,8 @@ if [ -z $FIRST_TIME ]; then
 fi
 
 echo "Running ${CONTAINER_NAME} ${IMAGE_NAME}:${SHA}..."
-docker run -t -d -p 80:80 -p 443:443 -p 7799:7799\
+docker run -t -d -p 80:80 -p 443:443 -p 7777:7777\
 	--env-file ~/.envs/$CONTAINER_NAME.env \
-	-v $(pwd)/cert/:~/repos/uranio-bld/cert/ \
+	-v /home/ec2-user/.certs/$CONTAINER_NAME/:/app/cert/ \
 	--name $CONTAINER_NAME \
 	$IMAGE_NAME:$SHA
