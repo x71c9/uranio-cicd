@@ -71,9 +71,17 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.AWS_PRIVATE_KEY }}
 
-      # - name: Set Uranio Service Port
-      #   id: vars
-      #   run: echo "::set-output name=service_port::$()"
+      - name: Download Read TOML file script
+        id: vars
+        run: wget https://raw.githubusercontent.com/x71c9/uranio-cicd/master/node_scripts/read_toml.b.js
+
+      - name: Set Uranio Service Port
+        id: vars
+        run: echo "::set-output name=service_port::$(node read_toml.b.js ./uranio.toml -k service.port)"
+
+      - name: Set Uranio Client Panel Port
+        id: vars
+        run: echo "::set-output name=client_port::$(node read_toml.b.js ./uranio.toml -k client.panel.port)"
 
       # - name: Run update_container.sh
       #   run: |
