@@ -1,0 +1,23 @@
+{
+	"name": "node_scripts",
+	"version": "1.0.0",
+	"description": "",
+	"main": "read_toml.b.js",
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"scripts": {
+		"bundle": "yarn esbuild --bundle read_toml.js --minify --outfile=read_toml.b.js --platform=node",
+		"bundle:watch": "yarn bundle --watch",
+		"mon:bundle": "yarn nodemon read_toml.b.js ~/repos/uranio/urn-adm/uranio.toml -k client.panel.port",
+		"dev": "yarn mon:bundle & yarn bundle:watch"
+	},
+	"dependencies": {
+		"commander": "^9.4.0",
+		"toml": "^3.0.0"
+	},
+	"devDependencies": {
+		"esbuild": "^0.15.5",
+		"nodemon": "^2.0.19"
+	}
+}

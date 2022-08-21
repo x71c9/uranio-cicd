@@ -2,3 +2,6 @@
 *.swp
 gitlab/cert/*
 !gitlab/cert/.gitkeep
+node_scripts/node_modules/
+node_scripts/package-lock.json
+node_scripts/yarn.lock

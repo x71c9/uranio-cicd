@@ -71,6 +71,10 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.AWS_PRIVATE_KEY }}
 
+      # - name: Set Uranio Service Port
+      #   id: vars
+      #   run: echo "::set-output name=service_port::$()"
+
       # - name: Run update_container.sh
       #   run: |
       #     echo "${{ secrets.AWS_PRIVATE_KEY }}" > key.pem \
@@ -89,5 +93,7 @@ jobs:
           ${{ env.GITLAB_PROJECT_ID }} \
           ${{ secrets.GITLAB_PERSONAL_ACCESS_TOKEN }} \
           ${{ github.event.repository.name }} \
-          ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}'
+          ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} \
+          ${{ steps.vars.outputs.service_port }} \
+          ${{ steps.vars.outputs.panel_port }}'
 
